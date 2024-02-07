@@ -16,10 +16,6 @@ jobs:
         GH_TOKEN: ${{ secrets.MY_TOKEN }}
       run: |
         git submodule update --init --remote
-        git config --global user.name "github-action"
-        git add .
-        git commit -m "Update Blog Content"
-        git push
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
