@@ -17,11 +17,6 @@ jobs:
       run: |
         git submodule update --init
         git submodule update --remote content
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@email.com"
-        git add .
-        git commit -m "Update Blog Content"
-        git push
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
@@ -32,10 +27,30 @@ jobs:
     - name: Build
       run: hugo --minify --gc
 
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
+#    - name: Deploy 🚀
+#      uses: JamesIves/github-pages-deploy-action@v4
+#      with:
+#          branch: gh-pages
+#          folder: public
+#          clean: true
+#          single-commit: true
+    - name: 上传七牛云
+      uses: luochongfei/up2qn@master
       with:
-          branch: gh-pages
-          folder: public
-          clean: true
-          single-commit: true
+        bucket: plyer-blog # 空间名称，按实际情况填写
+        zone: 华东 # 存储区域，按实际情况填写 备注1
+        access_key: ${{ secrets.QiNiu_AK }} # 七牛云 AccessKey 备注2
+        secret_key: ${{ secrets.QiNiu_SK }} # 七牛云 SecretKey 备注2
+        local_dir: public # 本地文件夹
+        #local_exclude: "**/node_modules/**" # 要排除的内容，要符合 glob 格式
+        target_dir: / # 要上传到七牛云中的文件夹
+          
+    - name: 删除 hugo 生成的静态文件
+      run: |
+        rm -rf public
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@email.com"
+        git add .
+        git commit -m "Update Blog Content And Delete Path public"
+        git push
+    
