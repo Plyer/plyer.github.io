@@ -15,9 +15,8 @@ jobs:
       #env:
         #GH_TOKEN: ${{ secrets.MY_TOKEN }}
       run: |
-        git submodule update --init
-        git submodule update --remote content
-
+        git submodule update --init --remote
+        
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
       with:
