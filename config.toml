@@ -46,8 +46,8 @@ uglyURLs = true
 
 # URL 结构
 [permalinks]
-    categories = "/categories/:slug"
-    tags = "/tags/:slug"
+    categories = "/categories/:slug/"
+    tags = "/tags/:slug/"
 
 # 类别
 [taxonomies]
@@ -190,34 +190,34 @@ uglyURLs = true
 [menu]
     ## 菜单栏
     # [[menu.main]]
-    #     pageref = "/index.html"
+    #     pageref = "/"
     #     name = "首页"
     #     weight = 1
     #     pre = "internal"
     #     post = "home"
     [[menu.main]]
-        pageref = "/posts/index.html"
+        pageref = "/posts/"
         name = "文章"
         weight = 2
         pre = "internal"
         post = ""
         identifier = "menu-posts"
     [[menu.main]]
-        pageref = "/categories/index.html"
+        pageref = "/categories/"
         name = "分类"
         weight = 3
         pre = "internal"
         post = ""
         #identifier = "menu-categories"
     [[menu.main]]
-        pageref = "/tags/index.html"
+        pageref = "/tags/"
         name = "标签"
         weight = 4
         pre = "internal"
         post = ""
         #identifier = "menu-tags"
     [[menu.main]]
-        pageref = "/about/index.html"
+        pageref = "/about/"
         name = "关于"
         weight = 5
         pre = "internal"
