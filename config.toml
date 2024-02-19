@@ -190,7 +190,7 @@ uglyURLs = true
 [menu]
     ## 菜单栏
     # [[menu.main]]
-    #     pageref = "/"
+    #     pageref = "/index.html"
     #     name = "首页"
     #     weight = 1
     #     pre = "internal"
