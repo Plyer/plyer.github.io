@@ -637,12 +637,12 @@ uglyURLs = true
     # 说明：https://valine.js.org/
 
     ## Utterances
-    enableUtterances = false
-    utterancesRepo = ""
+    enableUtterances = true
+    utterancesRepo = "Plyer/blog-content"
     utterancesIssueTerm = "pathname"
-    utterancesTheme = "github-light"
+    utterancesTheme = "preferred-color-scheme"
     utterancesThemeDark = "photon-dark"
-    utterancesLabel = ""
+    utterancesLabel = "blog-comment"
     # 说明：https://utteranc.es/
 
     ## Gitalk
