@@ -604,12 +604,12 @@ uglyURLs = true
     # 说明：仅在生产环境（production）下渲染
 
     # 是否开启（全局设置）
-    enableComments = false
+    enableComments = true
     # 说明：文章的 Front Matter 中的 `comments`
     #      的优先级高于此处
 
     # 直接加载评论，不需要手动点击按钮加载
-    autoLoadComments = false
+    autoLoadComments = true
 
     ## Disqus
     enableDisqus = false
@@ -640,7 +640,7 @@ uglyURLs = true
     enableUtterances = true
     utterancesRepo = "Plyer/blog-content"
     utterancesIssueTerm = "pathname"
-    utterancesTheme = "preferred-color-scheme"
+    utterancesTheme = "github-light"
     utterancesThemeDark = "photon-dark"
     utterancesLabel = "blog-comment"
     # 说明：https://utteranc.es/
