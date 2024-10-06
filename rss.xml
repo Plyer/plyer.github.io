@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>plyer</title><link>https://plyer.github.io/</link><description>plyer 的博客</description><generator>Hugo 0.135.0 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>hengshenglv@gmail.com (plyer)</managingEditor><webMaster>hengshenglv@gmail.com (plyer)</webMaster><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><lastBuildDate>Sun, 06 Oct 2024 03:01:45 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://plyer.github.io/rss.xml"/><item><title>hugo 博客搭建指南</title><link>https://plyer.github.io/posts/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97.html</link><guid isPermaLink="true">https://plyer.github.io/posts/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97.html</guid><pubDate>Mon, 19 Feb 2024 21:45:36 +0800</pubDate><author>hengshenglv@gmail.com (plyer)</author><copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright><description>&lt;h2 id="整体架构">整体架构&lt;/h2>
+&lt;p>在 github 托管两个仓库，仓库1 &lt;code>blog-content&lt;/code> 保存博客内容源文件，仓库2 &lt;code>plyer.github.io&lt;/code> 保存 Hugo 生成的网站文件，博客内容仓库通过 git submodule 的方式在网站仓库管理。&lt;/p>
+&lt;p>使用 Obsidian git 拉取 &lt;code>blog-content&lt;/code> 仓库，在 ob 写完博客后进行 &lt;code>git push&lt;/code>，推送后触发 &lt;code>blog-content&lt;/code> 仓库的 github action，这个 action 又会触发 &lt;code>plyer.github.io&lt;/code> 仓库的 github action，第二个 action 使用 hugo 构建网站并部署到 github pages。&lt;/p>
+&lt;h2 id="创建-github-仓库">创建 github 仓库&lt;/h2>
+&lt;p>创建博客内容仓库 &lt;code>blog-content&lt;/code> 和网站仓库 &lt;code>plyer.github.io&lt;/code>。&lt;/p>
+&lt;p>网站仓库名称使用 &lt;code>{github_username}.github.io&lt;/code> 的格式，这样可以直接通过 https://{github_username}.github.io 的 URL 访问博客网站，而不需要加上仓库名称作为 URL Path。&lt;/p>
+&lt;h2 id="使用-hugo-创建网站">使用 hugo 创建网站&lt;/h2>
+&lt;p>首先在本地 PC 中安装 hugo extend，使用 &lt;code>hugo new site blog&lt;/code> 创建出网站内容。&lt;/p>
+&lt;p>进入 blog 目录初始化 &lt;code>plyer.github.io&lt;/code> 仓库，运行以下命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git init
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git remote add origin git@github.com:Plyer/plyer.github.io.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git fetch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout -b master origin/master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>添加 meme 主题：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git submodule add --depth &lt;span class="m">1&lt;/span> git@github.com:reuixiy/hugo-theme-meme.git themes/meme
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 修改配置&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm config.toml &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> cp themes/meme/config-examples/zh-cn/config.toml config.toml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>添加 &lt;code>blog-content&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git rm -f content
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rm -rf content
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git submodule add origin git@github.com:Plyer/blog-content.git content
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 初始化子模块&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git submodule update --init --recursive
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 更新子模块仓库&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git submodule update --remote
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>编写博客内容并预览：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hugo new post/test.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vim post/test.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 启动本地服务预览&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hugo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>使用 &lt;code>hugo&lt;/code> 命令可以输出网站的静态文件到 public 目录，这个目录的内容就是部署静态网站的必要文件。&lt;/p>
+&lt;/blockquote>
+&lt;p>推送到 &lt;code>plyer.github.io&lt;/code> 仓库：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git commit -m &lt;span class="s2">&amp;#34;init&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git push
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="配置-github-workflow">配置 github workflow&lt;/h2>
+&lt;p>&lt;strong>一、配置 &lt;code>blog-content&lt;/code> 仓库的 workflow&lt;/strong>&lt;/p>
+&lt;p>创建一个 github ak，包含 &lt;code>plyer.github.io&lt;/code> 仓库的 workflow 权限。使用 &lt;code>gh workflow run build.yml -R plyer/plyer.github.io&lt;/code> 触发 &lt;code> plyer.github.io&lt;/code> 仓库的 &lt;code>build.yml&lt;/code> workflw。&lt;/p>
+&lt;p>&lt;strong>二、配置 &lt;code>plyer.github.io&lt;/code> 仓库的 workflow&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>Checkout 本仓库和子模块&lt;/li>
+&lt;li>更新子模块内容&lt;/li>
+&lt;li>安装 hugo 并构建发布到 github pages&lt;/li>
+&lt;/ol>
+&lt;h2 id="发布博客">发布博客&lt;/h2>
+&lt;p>Obsidian 中增加名为 blog 的文件夹，在其中拉取 &lt;code>blog-content&lt;/code> 仓库，写一篇文章并推送到 github 仓库中，触发 github action 自动构建发布。&lt;/p>
+&lt;h2 id="主题推荐">主题推荐&lt;/h2>
+&lt;p>参考 &lt;a href="https://jametry.github.io/page/2/">https://jametry.github.io/page/2/&lt;/a>&lt;/p>
+&lt;hr>
+&lt;h2 id="参考文献">参考文献&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://cuttontail.blog/blog/create-a-wesite-using-github-pages-and-hugo/#2-%E5%AE%89%E8%A3%85-hugo">如何用 GitHub Pages + Hugo 搭建个人博客 · 小绵尾巴 (cuttontail.blog)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.pseudoyu.com/en/2022/05/29/deploy_your_blog_using_hugo_and_github_action/">Hugo + GitHub Action，搭建你的博客自动发布系统 · Pseudoyu&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>
